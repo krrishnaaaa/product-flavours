@@ -1,5 +1,7 @@
 package com.pcsalt.example.productflavors;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -18,7 +20,15 @@ public class MainActivity extends AppCompatActivity {
 
         textView = (TextView) findViewById(R.id.text_view);
 
-        textView.setText(R.string.app_name);
+        String version = "";
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        textView.setText(getString(R.string.app_name) + " - " + version);
 
         MyLog.e(TAG, "some error log");
     }
