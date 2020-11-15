@@ -1,15 +1,17 @@
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 30
+    flavorDimensions 'server'
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -19,7 +21,7 @@ android {
         }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             versionNameSuffix getCurrentVersionSuffix()
         }
     }
@@ -27,19 +29,21 @@ android {
     productFlavors {
         prod {
             applicationId "com.pcsalt.example.productflavors"
+            dimension 'server'
         }
         uat {
             applicationId "com.pcsalt.example.productflavors.uat"
+            dimension 'server'
         }
         dev {
             applicationId "com.pcsalt.example.productflavors.dev"
+            dimension 'server'
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 }
 
 def getCurrentVersionSuffix() {
@@ -56,7 +60,7 @@ def getCurrentVersionSuffix() {
 def getCurrentFlavor() {
     String taskRequestName = getGradle().getStartParameter().getTaskRequests().toString()
 
-    Pattern pattern;
+    Pattern pattern
 
     if (taskRequestName.contains("assemble"))
         pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
@@ -68,6 +72,6 @@ def getCurrentFlavor() {
     if (matcher.find()) {
         return matcher.group(1).toLowerCase()
     } else {
-        return "";
+        return ""
     }
 }
