@@ -7,3 +7,5 @@ on:
 jobs:
   build:
     uses: krrishnaaaa/android-ci/.github/workflows/build.yml@main
+    with:
+      artifact-path: 'app/build/outputs/apk/*/debug/*.apk'
